@@ -19,11 +19,14 @@ spec:
           image: mysql:8.0
           ports:
             - containerPort: 3306
+          # envFrom: # Use envFrom to load all key-value pairs from a Secret
+          #   - secretRef:
+          #       name: mysql-db-secret # Reference the Secret created above
           env: # For production, use Kubernetes Secrets for sensitive data like passwords
             - name: MYSQL_ROOT_PASSWORD
-              value: "root"
-            - name: MYSQL_DATABASE
               value: "laravel"
+            - name: MYSQL_DATABASE
+              value: "yemdaro_db"
             - name: MYSQL_USER
               value: "laravel"
             - name: MYSQL_PASSWORD

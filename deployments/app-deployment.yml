@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: laravel-app
-          image: laravel-devops-final # Ensure this image is available in your registry
+          image: laravel-final-ops # Ensure this image is available in your registry
           imagePullPolicy: IfNotPresent
           workingDir: /var/www
           # PHP-FPM usually listens on port 9000
@@ -27,8 +27,15 @@ spec:
             - name: php-ini-volume
               mountPath: /usr/local/etc/php/php.ini
               subPath: php.ini # Use subPath to mount a specific file from ConfigMap
+            # NEW: Mount the Laravel project root directory into the container
+            - name: laravel-app-code # Name of the volume
+              mountPath: /var/www # Path inside the container
           # Add readiness and liveness probes for production
       volumes:
         - name: php-ini-volume
           configMap:
             name: php-ini-config
+        - name: laravel-app-code
+          hostPath: # This mounts a path from the node's filesystem
+            path: /mnt/home-extra/daro-extra/College/Devops/final/laravel # <<-- IMPORTANT: Change this to the actual path of your 'laravel' directory on the Kubernetes node
+            type: DirectoryOrCreate #
