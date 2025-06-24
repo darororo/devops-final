@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-webserver-deployment
+  labels:
+    app: nginx-webserver
+spec:
+  replicas: 1 # You can scale this up for more instances
+  selector:
+    matchLabels:
+      app: nginx-webserver
+  template:
+    metadata:
+      labels:
+        app: nginx-webserver
+    spec:
+      containers:
+        - name: nginx-webserver
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            # Mount nginx.conf from ConfigMap
+            - name: nginx-conf-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf # Use subPath to mount a specific file from ConfigMap
+          # Add readiness and liveness probes for production
+      volumes:
+        - name: nginx-conf-volume
+          configMap:
+            name: nginx-conf-config

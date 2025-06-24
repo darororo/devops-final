@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-db # This name will be used by the Laravel app to connect to the database
+  labels:
+    app: mysql-db
+spec:
+  selector:
+    app: mysql-db
+  ports:
+    - protocol: TCP
+      port: 3306 # Service port
+      targetPort: 3306 # Container port
+  type: ClusterIP # I
